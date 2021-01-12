@@ -15,6 +15,18 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
+    vscode.commands.registerCommand("vscode-extension.refresh", () => {
+      HelloWorldPanel.kill();
+      HelloWorldPanel.createOrShow(context.extensionUri);
+      setTimeout(() => {
+        vscode.commands.executeCommand(
+          "workbench.action.webview.openDeveloperTools"
+        );
+      }, 500);
+    })
+  );
+
+  context.subscriptions.push(
     vscode.commands.registerCommand(
       "vscode-extension.askQuestion",
       async () => {
