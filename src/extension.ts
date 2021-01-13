@@ -2,10 +2,15 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
 import { HelloWorldPanel } from "./HelloWorldPanel";
+import { SidebarProvider } from "./SidebarProvider";
 
 export function activate(context: vscode.ExtensionContext) {
-  console.log(
-    'Congratulations, your extension "vscode-extension" is now active!'
+  const sidebarProvider = new SidebarProvider(context.extensionUri);
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider(
+      "vscode-extension-sidebar",
+      sidebarProvider
+    )
   );
 
   context.subscriptions.push(
@@ -15,9 +20,11 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("vscode-extension.refresh", () => {
-      HelloWorldPanel.kill();
-      HelloWorldPanel.createOrShow(context.extensionUri);
+    vscode.commands.registerCommand("vscode-extension.refresh", async () => {
+      await vscode.commands.executeCommand("workbench.action.closeSidebar");
+      await vscode.commands.executeCommand(
+        "workbench.view.extension.vscode-extension-sidebar-view"
+      );
       setTimeout(() => {
         vscode.commands.executeCommand(
           "workbench.action.webview.openDeveloperTools"
