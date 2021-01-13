@@ -13,6 +13,7 @@
 		"onCommand:vscode-extension.helloWorld",
 		"onCommand:vscode-extension.askQuestion",
 		"onCommand:vscode-extension.refresh",
+		"onCommand:vscode-extension.addTodo",
 		"onView:vscode-extension-sidebar"
 	],
 	"main": "./dist/extension.js",
@@ -51,6 +52,11 @@
 				"command": "vscode-extension.refresh",
 				"category": "VSCode-Extension",
 				"title": "Refresh"
+			},
+			{
+				"command": "vscode-extension.addTodo",
+				"category": "VSCode-Extension",
+				"title": "addTodo"
 			}
 		]
 	},
