@@ -14,3 +14,10 @@ yo code
 
 3. Открываем тестовую страницу с помощью Run
 4. Открываем на ней devTools с помощью CTRL+R CTRL+P (вводим DevTools)
+
+5. Генерируем типы для .env
+
+```bash
+cd api/
+npx gen-env-types .env -o src/types/env.d.ts -e .
+```
