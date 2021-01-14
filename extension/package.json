@@ -14,6 +14,7 @@
 		"onCommand:vscode-extension.askQuestion",
 		"onCommand:vscode-extension.refresh",
 		"onCommand:vscode-extension.addTodo",
+		"onCommand:vscode-extension.authenticate",
 		"onView:vscode-extension-sidebar"
 	],
 	"main": "./dist/extension.js",
@@ -57,6 +58,11 @@
 				"command": "vscode-extension.addTodo",
 				"category": "VSCode-Extension",
 				"title": "addTodo"
+			},
+			{
+				"command": "vscode-extension.authenticate",
+				"category": "VSTodo",
+				"title": "Authenticate"
 			}
 		]
 	},
