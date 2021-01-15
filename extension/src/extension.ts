@@ -2,7 +2,6 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
 import { authenticate } from "./authenticate";
-import { HelloWorldPanel } from "./HelloWorldPanel";
 import { SidebarProvider } from "./SidebarProvider";
 import { TokenManager } from "./TokenManager";
 
@@ -57,7 +56,7 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand("vscode-extension.authenticate", () => {
       try {
-        authenticate();
+        authenticate(() => {});
       } catch (err) {
         console.log(err);
       }
