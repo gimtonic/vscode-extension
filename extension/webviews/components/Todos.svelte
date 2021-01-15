@@ -4,28 +4,13 @@
   export let user: User;
   export let accessToken: string;
   let text = "";
-  let todos: Array<{ text: string; completed: boolean }> = [];
-  onMount(async () => {
-    window.addEventListener("message", async (event) => {
-      const message = event.data;
-      switch (message.type) {
-        case "new-todo":
-          todos = [{ text: message.value, completed: false }, ...todos];
-          break;
-      }
-    });
-  });
-</script>
+  let todos: Array<{ text: string; completed: boolean; id: number }> = [];
 
-<div>Hello: {user.name}</div>
-
-<form
-  on:submit|preventDefault={async () => {
-    //todos = [{ text, completed: false }, ...todos];
+  async function addTodo(t: string) {
     const response = await fetch(`${apiBaseUrl}/todo`, {
       method: "POST",
       body: JSON.stringify({
-        text,
+        text: t,
       }),
       headers: {
         "content-type": "application/json",
@@ -34,6 +19,33 @@
     });
     const { todo } = await response.json();
     todos = [todo, ...todos];
+  }
+
+  onMount(async () => {
+    window.addEventListener("message", async (event) => {
+      const message = event.data;
+      switch (message.type) {
+        case "new-todo":
+          addTodo(message.value);
+          break;
+      }
+    });
+
+    const response = await fetch(`${apiBaseUrl}/todo`, {
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+      },
+    });
+    const payload = await response.json();
+    todos = payload.todos;
+  });
+</script>
+
+<div>Hello: {user.name}</div>
+
+<form
+  on:submit|preventDefault={async () => {
+    addTodo(text);
     text = "";
   }}
 >
@@ -41,7 +53,7 @@
 </form>
 
 <ul>
-  {#each todos as todo (todo.text)}
+  {#each todos as todo (todo.id)}
     <li
       class:complete={todo.completed}
       on:click={() => {
