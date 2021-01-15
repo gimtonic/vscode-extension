@@ -9,6 +9,8 @@ import { Strategy as GitHubStrategy } from "passport-github";
 import passport from "passport";
 import jwt from "jsonwebtoken";
 import cors from "cors";
+import { Todo } from "./entities/Todo";
+import { isAuth } from "./isAuth";
 
 const main = async () => {
   const {DB_USERNAME, DB_PASSWORD} = process.env
@@ -32,6 +34,7 @@ const main = async () => {
   });
   app.use(cors({ origin: "*" }));
   app.use(passport.initialize());
+  app.use(express.json());
 
   passport.use(
     new GitHubStrategy(
@@ -69,6 +72,14 @@ const main = async () => {
       res.redirect(`http://localhost:54321/auth/${req.user.accessToken}`);
     }
   );
+
+  app.post("/todo", isAuth, async (req: any, res) => {
+    const todo = await Todo.create({
+      text: req.body.text,
+      creatorId: req.userId,
+    }).save();
+    res.send({ todo });
+  });
 
   app.get("/me", async (req, res) => {
     const authHeader = req.headers.authorization;
