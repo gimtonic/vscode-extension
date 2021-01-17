@@ -17,7 +17,7 @@ import {
     text: string;
   
     @Column("boolean", { default: false })
-    completed: string;
+    completed: boolean;
   
     @Column()
     creatorId: number;
